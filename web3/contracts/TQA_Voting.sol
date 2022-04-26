@@ -14,7 +14,7 @@ contract TQA_Voting {
         string comment;
     }
 
-    Vote[] votes;
+    Vote[] public votes;
     mapping(address => bool) voters;
     string public name;
 
