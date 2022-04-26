@@ -87,7 +87,7 @@ struct ContentView: View {
 
         client.eth_sendRawTransaction(transaction, withAccount: account) { (error, txHash) in
             print("error: \(error.debugDescription)")
-            print("TX Hash: \(txHash)")
+            print("TX Hash: \(String(describing: txHash))")
         }
 
     }
