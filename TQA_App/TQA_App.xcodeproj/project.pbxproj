@@ -8,11 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1F5200E528180566005C285C /* TQA_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5200D528180562005C285C /* TQA_AppApp.swift */; };
-		1F5200E628180566005C285C /* TQA_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5200D528180562005C285C /* TQA_AppApp.swift */; };
 		1F5200E728180566005C285C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5200D628180562005C285C /* ContentView.swift */; };
-		1F5200E828180566005C285C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5200D628180562005C285C /* ContentView.swift */; };
 		1F5200E928180566005C285C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F5200D728180566005C285C /* Assets.xcassets */; };
-		1F5200EA28180566005C285C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F5200D728180566005C285C /* Assets.xcassets */; };
 		1F5200FB28181278005C285C /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = 1F5200FA28181278005C285C /* web3.swift */; };
 /* End PBXBuildFile section */
 
@@ -21,8 +18,6 @@
 		1F5200D628180562005C285C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1F5200D728180566005C285C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F5200DC28180566005C285C /* TQA_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TQA_App.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F5200E228180566005C285C /* TQA_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TQA_App.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F5200E428180566005C285C /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,13 +29,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1F5200DF28180566005C285C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -48,7 +36,6 @@
 			isa = PBXGroup;
 			children = (
 				1F5200D428180562005C285C /* Shared */,
-				1F5200E328180566005C285C /* macOS */,
 				1F5200DD28180566005C285C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -67,17 +54,8 @@
 			isa = PBXGroup;
 			children = (
 				1F5200DC28180566005C285C /* TQA_App.app */,
-				1F5200E228180566005C285C /* TQA_App.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		1F5200E328180566005C285C /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				1F5200E428180566005C285C /* macOS.entitlements */,
-			);
-			path = macOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -103,23 +81,6 @@
 			productReference = 1F5200DC28180566005C285C /* TQA_App.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1F5200E128180566005C285C /* TQA_App (macOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1F5200F028180566005C285C /* Build configuration list for PBXNativeTarget "TQA_App (macOS)" */;
-			buildPhases = (
-				1F5200DE28180566005C285C /* Sources */,
-				1F5200DF28180566005C285C /* Frameworks */,
-				1F5200E028180566005C285C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "TQA_App (macOS)";
-			productName = "TQA_App (macOS)";
-			productReference = 1F5200E228180566005C285C /* TQA_App.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -131,9 +92,6 @@
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					1F5200DB28180566005C285C = {
-						CreatedOnToolsVersion = 13.3;
-					};
-					1F5200E128180566005C285C = {
 						CreatedOnToolsVersion = 13.3;
 					};
 				};
@@ -155,7 +113,6 @@
 			projectRoot = "";
 			targets = (
 				1F5200DB28180566005C285C /* TQA_App (iOS) */,
-				1F5200E128180566005C285C /* TQA_App (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -169,14 +126,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1F5200E028180566005C285C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1F5200EA28180566005C285C /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -186,15 +135,6 @@
 			files = (
 				1F5200E728180566005C285C /* ContentView.swift in Sources */,
 				1F5200E528180566005C285C /* TQA_AppApp.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1F5200DE28180566005C285C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1F5200E828180566005C285C /* ContentView.swift in Sources */,
-				1F5200E628180566005C285C /* TQA_AppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,62 +311,6 @@
 			};
 			name = Release;
 		};
-		1F5200F128180566005C285C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LT537GNHPL;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ru.igralino.TQA-App";
-				PRODUCT_NAME = TQA_App;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		1F5200F228180566005C285C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LT537GNHPL;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ru.igralino.TQA-App";
-				PRODUCT_NAME = TQA_App;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -444,15 +328,6 @@
 			buildConfigurations = (
 				1F5200EE28180566005C285C /* Debug */,
 				1F5200EF28180566005C285C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1F5200F028180566005C285C /* Build configuration list for PBXNativeTarget "TQA_App (macOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1F5200F128180566005C285C /* Debug */,
-				1F5200F228180566005C285C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
