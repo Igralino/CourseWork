@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-contract TQA_Voting {
+contract SimpleVoting {
     uint private MIN_VOTE = 1;
     uint private MAX_VOTE = 10;
 
