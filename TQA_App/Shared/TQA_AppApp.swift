@@ -9,10 +9,6 @@ import SwiftUI
 
 @main
 struct TQA_AppApp: App {
-
-    init(){
-    }
-
     var body: some Scene {
         WindowGroup {
             ContentView()

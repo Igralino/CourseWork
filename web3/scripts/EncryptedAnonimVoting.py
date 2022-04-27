@@ -16,7 +16,6 @@ def main():
     print("KEYS:")
     print(f"\tprivate_key {private_key}")
     print(f"\tpublic_key {public_key}")
-    now = int(time.time())
     voting = account.deploy(EncryptedAnonimVoting, "Test voting", public_key,
                             [accounts[0].address, accounts[1].address])
     voting.start_voting()
@@ -26,5 +25,3 @@ def main():
     res = voting.tally_results()
     res = list(map(lambda x: x.decode('ascii'), res))
     print(res)
-
-

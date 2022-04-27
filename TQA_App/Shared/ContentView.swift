@@ -9,52 +9,96 @@ import SwiftUI
 import web3
 import BigInt
 
+extension String: Error {}
 
 struct ContentView: View {
 
+    @State private var difficulty = 5.0
+    @State private var alert: Alert? = nil
+    @State private var profit = 5.0
+    @State private var comment = ""
+    @State private var privateKey = ""
+    @State private var web3Address = ""
+    @State private var contractAddress = ""
+    @State private var isEditing = false
+    @State private var showingAlert = false
+
+    var body: some View {
+        NavigationView{
+            Form {
+                Section(header: Text("Данные аккаунта")) {
+                    TextField("Ваш приватный ключ",
+                              text: $privateKey)
+                    TextField("Web3 адрес",
+                              text: $web3Address)
+                    TextField("Адрес контракта",
+                              text: $contractAddress)
+                }
+                Section(header: Text("Оцени курс")) {
+                    VStack(alignment: .leading) {
+                        Text("Сложность курса: \(Int(difficulty))/10")
+                            .fontWeight(.regular)
+                        Slider(value: $difficulty,
+                               in: 1...10,
+                               step: 1) {
+                            Text("Speed").background(.red)
+                        } minimumValueLabel: {
+                            Text("1")
+                        } maximumValueLabel: { Text("10") }
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Полезность курса: \(Int(profit))/10")
+                        Slider(value: $profit,
+                               in: 1...10,
+                               step: 1) {
+                            Text("Speed").background(.red)
+                        } minimumValueLabel: {
+                            Text("1")
+                        } maximumValueLabel: { Text("10") }
+                    }
+                }
+                Section(header: Text("Комментарий")) {
+                    TextField("Комментарий о курсе",
+                              text: $comment)
+                }
+                Button("Отправить") {
+                    Task {
+                        do {
+                            let tx = try await self.setUpWeb3()
+                                alert = Alert(title: Text("Success"),
+                                      message: Text(tx),
+                                      dismissButton: .default(Text("Got it!")))
+
+                            showingAlert = true
+                        } catch {
+                            alert = Alert(title: Text("Error"),
+                                      message: Text(error.localizedDescription),
+                                      dismissButton: .default(Text("Got it!")))
+                            showingAlert = true
+
+                        }
+                    }
+                }
+            }
+            .navigationTitle("СОП online")
+            .alert(isPresented: $showingAlert) {
+                alert!
+            }
+        }
+    }
 
     public struct Vote: ABIFunction {
         public static let name = "vote"
         public let gasPrice: BigUInt? = "20000000000"
         public let gasLimit: BigUInt? = "6721975"
         public var contract: EthereumAddress
-        public let from: EthereumAddress?
+        public let from: EthereumAddress? = nil
 
-        struct VoteTuple: ABITuple {
-                func encode(to encoder: ABIFunctionEncoder) throws {
-                    try encoder.encode(future_career_mark)
-                    try encoder.encode(difficulty_mark)
-                    try encoder.encode(comment)
-                }
-
-                static var types: [ABIType.Type] { [BigUInt.self, BigUInt.self, String.self] }
-
-                var future_career_mark: BigUInt
-                var difficulty_mark: BigUInt
-                var comment: String
-
-                init(future_career_mark: BigUInt, difficulty_mark: BigUInt, comment: String) {
-                    self.future_career_mark = future_career_mark
-                    self.difficulty_mark = difficulty_mark
-                    self.comment = comment
-                }
-
-                init?(values: [ABIDecoder.DecodedValue]) throws {
-                    self.future_career_mark = try values[0].decoded()
-                    self.difficulty_mark = try values[1].decoded()
-                    self.comment = try values[2].decoded()
-                }
-
-                var encodableValues: [ABIType] { [future_career_mark, difficulty_mark, comment] }
-            }
-
-        public let vote: VoteTuple
+        public let vote: Data
 
         public init(contract: EthereumAddress,
-                    from: EthereumAddress? = nil,
-                    vote: VoteTuple) {
+                    vote: Data) {
             self.contract = contract
-            self.from = from
             self.vote = vote
         }
 
@@ -63,46 +107,35 @@ struct ContentView: View {
         }
     }
 
-    static func setUpWeb3() async {
+    func setUpWeb3() async throws -> String {
         let keyStorage = EthereumKeyLocalStorage()
-        let account = try! EthereumAccount.importAccount(keyStorage: keyStorage,
-                                                         privateKey: "0xfc98d3882a416dfed4b546e3852a8b7dcf63124dc9cce12adae08555181018db",
-                                                         keystorePassword: "MY_PASSWORD")
+        let account = try EthereumAccount.importAccount(keyStorage: keyStorage,
+                                                        privateKey: privateKey.trimmingCharacters(in: .whitespaces),
+                                                        keystorePassword: "MY_PASSWORD")
 
-        let clientUrl = URL(string: "http://127.0.0.1:8545")!
+        guard let clientUrl = URL(string: web3Address) else {
+            throw "WEB3 NOT URL"
+        }
         let client = EthereumClient(url: clientUrl)
 
-        let address = EthereumAddress("0xFAEDEe5B7f36538C0A503B64b7B0ccf2Eb320C38")
-        let res = try! await client.eth_getBalance(address: address,
-                                                   block: .Latest)
+        var vote = Dictionary<String, String>()
+        vote["difficulty"] = String(describing: Int(difficulty))
+        vote["profit"] =  String(describing: Int(profit))
+        vote["comment"] = comment
 
+        let encoder = JSONEncoder()
+        let jsonData = try encoder.encode(vote)
 
-        print(res)
-        print("HELLO")
+        let function = Vote(contract: EthereumAddress(contractAddress),
+                            vote: jsonData)
+        let transaction = try function.transaction()
 
-        let function = Vote(contract: EthereumAddress("0xdD1510C3Da11FFf01b2c14A4B0d4F6c9058D0Ef4"),
-                            from: EthereumAddress("0xfrom"),
-                            vote: .init(future_career_mark: 10, difficulty_mark: 10, comment: "hello!"))
-        let transaction = try! function.transaction()
+        let tx = try await client.eth_sendRawTransaction(transaction, withAccount: account)
+        return tx
 
-        client.eth_sendRawTransaction(transaction, withAccount: account) { (error, txHash) in
-            print("error: \(error.debugDescription)")
-            print("TX Hash: \(String(describing: txHash))")
-        }
-
-    }
-
-    init(){
-        Task {
-            await ContentView.setUpWeb3()
-        }
-    }
-
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
