@@ -1,58 +1,80 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.1;
 
-import "OpenZeppelin/openzeppelin-contracts@4.6.0/contracts/utils/Strings.sol";
-
 contract EncryptedAnonimVoting {
 
-    enum VoterStatus {VOTED, NOT_VOTED}
     enum VotingStatus {TOO_EARLY, ACTIVE, FINISHED}
+    VotingStatus public voting_status;
 
-    bytes[] public votes;
-    mapping(address => VoterStatus) voters_status;
-    VotingStatus voting_status;
     string public name;
     address creator;
 
-    string public public_key;
+    bytes[] public votes;
+    string[] public signs;
 
-    // voted event
+    string[] public voters_public_keys;
+
+    string public public_encryption_key;
+    string public secret_decryption_key;
+
     event votedEvent();
 
-    constructor (string memory _name, string memory _public_key, address[] memory _voters) {
-        name = _name;
-        public_key = _public_key;
-        voting_status = VotingStatus.TOO_EARLY;
-
-        for (uint i=0; i<_voters.length; i++) {
-            voters_status[_voters[i]] = VoterStatus.NOT_VOTED;
-        }
-
+    constructor (string memory _name, string memory _public_key, string[] memory _voters) {
         creator = msg.sender;
+
+        name = _name;
+        public_encryption_key = _public_key;
+        voting_status = VotingStatus.TOO_EARLY;
+        voters_public_keys = _voters;
     }
 
     function start_voting() public {
         require(creator == msg.sender);
+        require(voting_status == VotingStatus.TOO_EARLY);
         voting_status = VotingStatus.ACTIVE;
     }
+
     function finish_voting() public {
         require(creator == msg.sender);
+        require(voting_status == VotingStatus.ACTIVE);
         voting_status = VotingStatus.FINISHED;
     }
 
-    function vote(bytes calldata _vote) public {
+    function continue_voting() public {
+        // TODO: DEBUG ONLY! REMOVE BEFORE PRODUCTION!
+        require(creator == msg.sender);
+        voting_status = VotingStatus.ACTIVE;
+    }
+
+    function publish_secret_key(string memory _secret_key) public {
+        require(creator == msg.sender);
+        require(voting_status == VotingStatus.FINISHED);
+        secret_decryption_key = _secret_key;
+    }
+
+    function vote(bytes calldata _vote, string memory _sign) public {
         require(voting_status == VotingStatus.ACTIVE);
-        require(voters_status[msg.sender] == VoterStatus.NOT_VOTED, "You have already voted or not allowed to vote");
 
         votes.push(_vote);
+        signs.push(_sign);
 
-        voters_status[msg.sender] = VoterStatus.VOTED;
         // trigger voted event
         emit votedEvent();
     }
 
-    function tally_results() public view returns (bytes[] memory) {
+    function get_votes() public view returns (bytes[] memory) {
         require(voting_status == VotingStatus.FINISHED);
         return votes;
     }
+
+    function get_signs() public view returns (string[] memory) {
+        require(voting_status == VotingStatus.FINISHED);
+        return signs;
+    }
+
+    function get_voters_public_keys() public view returns (string[] memory) {
+        return voters_public_keys;
+    }
+
+
 }

@@ -1,0 +1,33 @@
+{
+  "name": "voting",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "distribute": "yarn build-ts && yarn start",
+    "build-ts": "yarn tsc",
+    "watch-ts": "yarn tsc -w",
+    "start": "NODE_PATH=. node dist/index.js",
+    "start:dev": "NODE_PATH=. nodemon -w dist dist/index.js",
+    "dev:hot": "yarn build-ts && concurrently -r -k -i \"yarn start:dev\" \"yarn watch-ts\""
+  },
+  "dependencies": {
+    "@koa/router": "^10.1.1",
+    "@typegoose/typegoose": "^9.8.1",
+    "concurrently": "^7.1.0",
+    "dotenv": "^16.0.0",
+    "got": "11",
+    "hse-lk-api": "git+ssh://git@g.hse.ru:hse-apps/backend/hse-lk-api.git#2.18.0",
+    "hse-service-oidc": "git+ssh://git@g.hse.ru:hse-apps/backend/pkg/hse-service-oidc.git#1.9.3",
+    "hse-web-server": "git+ssh://git@g.hse.ru:hse-apps/backend/pkg/hse-web-server.git#^1.9.0",
+    "koa": "^2.13.4",
+    "mongoose": "~6.3",
+    "nodemon": "^2.0.16",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@types/koa__router": "^8.0.11",
+    "@types/node": "^17.0.31",
+    "typescript": "^4.6.4"
+  }
+}

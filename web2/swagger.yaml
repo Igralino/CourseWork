@@ -1,0 +1,126 @@
+openapi: 3.0.3
+info:
+  title: voting-service
+  version: '1.0'
+servers:
+  - url: 'https://api.hseapp.ru/voting'
+  - url: 'https://dev.hseapp.ru/voting'
+paths:
+  /me:
+    get:
+      summary: Get info about user and voting.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeResponse"
+  /key:
+    post:
+      summary: Set public key.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - key
+                - voting_id
+              properties:
+                key:
+                  type: string
+                voting_id:
+                  type: string
+      responses:
+        '204':
+          description: Successful response
+  /users:
+    post:
+      summary: Get info about groupmates.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - voting_id
+              properties:
+                voting_id:
+                  type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponse"
+
+components:
+  schemas:
+    AnyValue:
+      anyOf:
+        - type: string
+        - type: number
+        - type: integer
+        - type: boolean
+        - type: array
+          items: {}
+        - type: object
+    VotingStatus:
+      type: string
+      enum:
+        - REGISTER
+        - PREPARE
+        - ACTIVE
+        - FINISHED
+    MeResponse:
+      type: object
+      required:
+        - voting_status
+        - voting_id
+        - start_date
+        - finish_date
+        - title
+        - contract_tx
+        - group_id
+        - group_title
+      properties:
+        voting_status: 
+          $ref: "#/components/schemas/VotingStatus"
+        voting_id: 
+          type: string
+        start_date:
+          type: string
+          format: date-time
+        finish_date:
+          type: string
+          format: date-time
+        title:
+          type: string
+        contract_tx:
+          type: string
+        group_id: 
+          type: string
+        group_title:
+          type: string
+        public_key:
+          type: string
+    UsersResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/UsersResponseUser"
+    UsersResponseUser:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            full_name:
+              type: string
+            email:
+              type: string
+        key:
+          type: string
